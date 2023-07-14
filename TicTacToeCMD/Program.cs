@@ -16,27 +16,28 @@ namespace TicTacToeCMD
             };
 
             int i = 0;
+            int turn = 1; //Player turn: 1 represents 'O', 2 represents 'X'
 
             while (true)
             {
                 DisplayGameBoard(xoArray);
 
                 int check = Checker(xoArray);
+
                 if (check!=0)
                 {
                     Console.WriteLine(DisplaySign(check) + " won the game!");
                     break;
                 }
-
-
-                if (i == 9)
+                else if (i == 9)
                 {
                     Console.WriteLine("End game and no one has won!");
                     break;
                 }
-
-                int turn = i % 2 == 0 ? 1 : 2;
-                Console.WriteLine("Now it's turn for {0}", DisplaySign(turn));
+                else
+                {
+                    Console.WriteLine("Now it's turn for {0}", DisplaySign(turn));
+                }
 
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                 char userInput = keyInfo.KeyChar;
@@ -44,14 +45,17 @@ namespace TicTacToeCMD
                 int inputValue;
                 if (int.TryParse(userInput.ToString(), out inputValue) && inputValue >= 1 && inputValue <= 9)
                 {
+
                     int row = (inputValue - 1) / 3; //Get x, y position of array from 1-9 input
                     int col = (inputValue - 1) % 3;
                     if (xoArray[row, col] != 0) continue;
 
                     xoArray[row, col] = turn;
+
+                    i++;
+                    turn = i % 2 == 0 ? 1 : 2;
                 }
 
-                i++;
             }
         }
 
