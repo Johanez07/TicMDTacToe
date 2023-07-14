@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace TicTacToeCMD
 {
@@ -20,9 +21,17 @@ namespace TicTacToeCMD
             {
                 DisplayGameBoard(xoArray);
 
+                int check = Checker(xoArray);
+                if (check!=0)
+                {
+                    Console.WriteLine(DisplaySign(check) + " won the game!");
+                    break;
+                }
+
+
                 if (i == 9)
                 {
-                    Console.WriteLine("End game!");
+                    Console.WriteLine("End game and no one has won!");
                     break;
                 }
 
@@ -44,6 +53,29 @@ namespace TicTacToeCMD
 
                 i++;
             }
+        }
+
+        static int Checker(int[,] array)
+        {
+            //Check horizontal and vertical results
+            for (int i = 0; i < array.GetLength(0); i++)
+            {
+                for (int sign = 1; sign <= 2; sign++)
+                {
+                    if (array[i, 0] == sign && array[i, 1] == sign && array[i, 2] == sign) return sign;
+                    else if (array[0, i] == sign && array[1, i] == sign && array[2, i] == sign) return sign;
+                }
+
+            }
+
+            //Check diagonals results
+            for (int sign = 1; sign <= 2; sign++)
+            {
+                if (array[0, 0] == sign && array[1, 1] == sign && array[2, 2] == sign) return sign;
+                else if (array[0, 2] == sign && array[1, 1] == sign && array[2, 0] == sign) return sign;
+            }
+
+            return 0;
         }
 
         static void DisplayGameBoard(int[,] array)
