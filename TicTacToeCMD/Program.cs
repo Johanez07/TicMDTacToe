@@ -17,22 +17,32 @@ namespace TicTacToeCMD
 
             int i = 0;
             int turn = 1; //Player turn: 1 represents 'O', 2 represents 'X'
+            int[] playersScores = { 0, 0 };
 
             while (true)
             {
                 DisplayGameBoard(xoArray);
+
+                Console.WriteLine("Player X wins: " + playersScores[0]);
+                Console.WriteLine("Player O wins: " + playersScores[1]);
 
                 int check = Checker(xoArray);
 
                 if (check!=0)
                 {
                     Console.WriteLine(DisplaySign(check) + " won the game!");
-                    break;
+                    ResetGame(xoArray, playersScores, check);
+                    i = 0;
+                    turn = 1;
+                    continue;
                 }
                 else if (i == 9)
                 {
                     Console.WriteLine("End game and no one has won!");
-                    break;
+                    ResetGame(xoArray, playersScores, 0);
+                    i = 0;
+                    turn = 1;
+                    continue;
                 }
                 else
                 {
@@ -57,6 +67,20 @@ namespace TicTacToeCMD
                 }
 
             }
+        }
+
+        static void ResetGame(int[,] xoArray, int[] playersScores, int id)
+        {
+            for (int y = 0; y < xoArray.GetLength(0); y++)
+            {
+                for (int x = 0; x < xoArray.GetLength(1); x++)
+                {
+                    xoArray[x, y] = 0;
+                }
+            }
+
+            if (id!=0) playersScores[id - 1]++;
+
         }
 
         static int Checker(int[,] array)
